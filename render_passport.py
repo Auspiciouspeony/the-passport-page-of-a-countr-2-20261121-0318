@@ -440,31 +440,38 @@ def render(out_path="entry.png"):
         d.rectangle([vx1 - 46 + i * 12, vy1 - 16, vx1 - 36 + i * 12, vy1 - 8],
                     fill=c, outline=NAVY_LT, width=1)
 
-    # --- stamps (rotated, translucent ink)
+    # --- stamps (rotated, translucent ink) — six stamps would crowd the
+    # page, so five: every trip is closed. Skarland in/out, Alderva in/out
+    # inside its visa validity (09 JUL – 07 AUG), then Vestmara departure.
     paste_rotated(img,
-                  oval_stamp((150, 84), STAMP_BLUE,
+                  oval_stamp((132, 72), STAMP_BLUE,
                              ["SKARLAND", "ENTRY", "18 JUN 2026"],
                              sub="BERGEN · 041"),
-                  (782, 128), -8)
+                  (782, 126), -8)
     paste_rotated(img,
-                  rect_stamp(150, 62, STAMP_RED,
+                  rect_stamp(132, 54, STAMP_RED,
                              ["SKARLAND", "EXIT  25 JUN 2026"],
                              sub="BERGEN · OFFICER 17"),
-                  (782, 226), 6)
+                  (782, 212), 6)
     paste_rotated(img,
-                  oval_stamp((150, 84), STAMP_PURPLE,
+                  oval_stamp((132, 72), STAMP_PURPLE,
                              ["ALDERVA", "ENTRY", "09 JUL 2026"],
                              sub="REYKJAVÍK · 112"),
-                  (548, 262), -11)
+                  (548, 250), -11)
     paste_rotated(img,
-                  rect_stamp(158, 74, STAMP_GREEN,
+                  oval_stamp((132, 72), STAMP_PURPLE,
+                             ["ALDERVA", "EXIT", "28 JUL 2026"],
+                             sub="REYKJAVÍK · 112"),
+                  (548, 332), 9)
+    paste_rotated(img,
+                  rect_stamp(140, 64, STAMP_GREEN,
                              ["VESTMARA", "DEPARTURE", "02 OCT 2026"],
                              sub="HRAFNHÓLM · HARBOUR 3"),
-                  (742, 296), 4)
+                  (742, 290), 4)
     d = ImageDraw.Draw(img)
 
     # --- conditions box: the paperwork detail that reveals the country
-    cx0, cy0, cx1, cy1 = 548, 392, 962, 516
+    cx0, cy0, cx1, cy1 = 548, 436, 962, 548
     d.rounded_rectangle([cx0, cy0, cx1, cy1], radius=4, fill=(250, 247, 238),
                         outline=NAVY_LT, width=1)
     text(d, (cx0 + 12, cy0 + 10), "CONDITIONS OF ISSUE", SB(11), NAVY)
@@ -475,11 +482,12 @@ def render(out_path="entry.png"):
         "2.  Fishing in Vestmaran waters without a licence",
         "      is prohibited; the catch is forfeit.",
         "3.  In fog, the harbour bell answers before the light.",
+        "4.  The Sæhrafen sails only on the stamped tide.",
     ]
-    yy = cy0 + 34
+    yy = cy0 + 32
     for ln in conds:
         text(d, (cx0 + 12, yy), ln, SR(11), INK)
-        yy += 15
+        yy += 13
     # harbour fee stamp overlapping the conditions box corner
     fee = Image.new("RGBA", (150, 150), (0, 0, 0, 0))
     fd = ImageDraw.Draw(fee)
